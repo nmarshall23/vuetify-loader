@@ -4,6 +4,7 @@ export interface Options {
   autoImport?: importPluginOptions,
   styles?: true | 'none' | 'expose' | 'sass' | {
     configFile: string,
+    useLayers?: boolean,
   },
   /** @internal Only for testing */
   stylesTimeout?: number

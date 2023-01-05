@@ -186,7 +186,9 @@ export function stylesPlugin (options: Options): Plugin {
 
           const target = resolution.id.replace(/\.css$/, '.sass')
           const file = path.relative(path.join(vuetifyBase, 'lib'), target)
-          const contents = `@use "${configFile}"\n@use "${target}"`
+
+
+          const contents = scssFileContents(options.useLayers, configFile, target)
 
           tempFiles.set(file, contents)
 
@@ -232,4 +234,13 @@ export function stylesPlugin (options: Options): Plugin {
       return null
     },
   }
+}
+
+function scssFileContents(useLayers: boolean | undefined, configFile: string | undefined, target: string) {
+
+  if (useLayers) {
+    return `@use 'sass:meta';\n @use "${configFile};\n @layer framework {\n @include meta.load-css("${target}");\n }\n`
+  }
+
+  return `@use "${configFile}"\n@use "${target}"`
 }
